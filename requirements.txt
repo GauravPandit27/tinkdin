@@ -1,0 +1,9 @@
+streamlit
+PyMuPDF
+python-docx
+beautifulsoup4
+requests
+groq
+pydantic
+python-dotenv
+fitz
