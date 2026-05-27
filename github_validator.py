@@ -9,29 +9,29 @@ def is_github_profile(url):
     return bool(re.match(pattern, url))
 
 def fetch_github_repo_count(url):
-    """Fetches the number of public repositories from a GitHub profile."""
+    """Fetches the number of public repositories from a GitHub profile using the GitHub API."""
     if not is_github_profile(url):
         return None
     
     try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers, timeout=5)
+        # Extract username from url (e.g., https://github.com/username/)
+        username = url.rstrip('/').split('/')[-1]
+        
+        api_url = f"https://api.github.com/users/{username}"
+        headers = {
+            'User-Agent': 'Tinkdin-Hackathon-App',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+        
+        response = requests.get(api_url, headers=headers, timeout=5)
         if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            # The repository count is typically in a span inside a link with data-tab-item="repositories"
-            repo_tab = soup.find('a', {'data-tab-item': 'repositories'})
-            if repo_tab:
-                count_span = repo_tab.find('span', class_='Counter')
-                if count_span:
-                    count_text = count_span.text.strip()
-                    # Convert to int, handling 'k' or commas if necessary
-                    count_text = count_text.replace(',', '')
-                    if 'k' in count_text.lower():
-                        return int(float(count_text.lower().replace('k', '')) * 1000)
-                    return int(count_text)
-        return None
+            data = response.json()
+            return data.get('public_repos', 0)
+        else:
+            print(f"GitHub API returned {response.status_code} for {username}")
+            return None
     except Exception as e:
-        print(f"Error fetching GitHub profile {url}: {e}")
+        print(f"Error fetching GitHub profile {url} via API: {e}")
         return None
 
 def validate_links(links):

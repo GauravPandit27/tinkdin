@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { UploadCloud, CheckCircle2, AlertCircle, Loader2, FileText, Type } from 'lucide-react';
+import { UploadCloud, CheckCircle2, AlertCircle, Loader2, FileText, Type, X, Flame } from 'lucide-react';
 
 export default function UploadArea({ onAnalyze }) {
   const [jdText, setJdText] = useState('');
@@ -127,22 +127,25 @@ export default function UploadArea({ onAnalyze }) {
   };
 
   return (
-    <div className="glass-panel animate-fade-in" style={{ padding: '2rem' }}>
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🔥 Tinkdin</h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Upload a Job Description and Resumes to find your perfect match.</p>
+    <div className="panel animate-up" style={{ padding: '3rem 2.5rem', maxWidth: '700px', margin: '0 auto', width: '100%' }}>
+      <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+        <h1 className="wordmark" style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+          <Flame size={48} color="#a855f7" strokeWidth={2.5} fill="#a855f7" style={{ filter: 'drop-shadow(0 0 10px rgba(168,85,247,0.5))' }} /> 
+          Tinkdin
+        </h1>
+        <p style={{ color: 'var(--text-2)', fontSize: '1.05rem' }}>Upload a Job Description and Resumes to analyze fit.</p>
       </div>
 
       {error && (
-        <div className="glass-panel" style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', borderColor: 'var(--danger)', padding: '1rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <AlertCircle color="var(--danger)" />
-          <span style={{ color: 'var(--danger)' }}>{error}</span>
+        <div className="alert-error" style={{ marginBottom: '1.5rem' }}>
+          <AlertCircle size={18} />
+          <span>{error}</span>
         </div>
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Groq API Key (Optional if set in .env)</label>
+          <label className="field-label">API Configuration</label>
           <input 
             type="password" 
             placeholder="gsk_... (leave blank to use .env)" 
@@ -152,18 +155,18 @@ export default function UploadArea({ onAnalyze }) {
         </div>
 
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <label style={{ fontWeight: '500' }}>Job Description</label>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <label className="field-label" style={{ marginBottom: 0 }}>Job Description</label>
+            <div className="tab-group">
               <button 
                 onClick={() => setJdMode('text')} 
-                style={{ padding: '0.3rem 0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: jdMode === 'text' ? 'rgba(99, 102, 241, 0.2)' : 'transparent', color: jdMode === 'text' ? '#818cf8' : 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                className={`tab-btn ${jdMode === 'text' ? 'active' : ''}`}
               >
                 <Type size={14} /> Text
               </button>
               <button 
                 onClick={() => setJdMode('file')} 
-                style={{ padding: '0.3rem 0.8rem', borderRadius: '8px', border: '1px solid var(--card-border)', background: jdMode === 'file' ? 'rgba(99, 102, 241, 0.2)' : 'transparent', color: jdMode === 'file' ? '#818cf8' : 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                className={`tab-btn ${jdMode === 'file' ? 'active' : ''}`}
               >
                 <FileText size={14} /> File
               </button>
@@ -183,11 +186,11 @@ export default function UploadArea({ onAnalyze }) {
               style={{ padding: '2rem 1rem' }}
               onClick={() => jdFileInputRef.current?.click()}
             >
-              <FileText size={32} color="var(--text-secondary)" style={{ margin: '0 auto 0.5rem' }} />
+              <FileText size={36} color="var(--text-3)" style={{ margin: '0 auto 1rem' }} />
               {jdFile ? (
-                <p style={{ color: '#818cf8', fontWeight: '500' }}>{jdFile.name}</p>
+                <p style={{ color: 'var(--text-1)', fontWeight: '500' }}>{jdFile.name}</p>
               ) : (
-                <p style={{ color: 'var(--text-secondary)' }}>Click to upload JD (PDF or DOCX)</p>
+                <p style={{ color: 'var(--text-2)' }}>Click to upload JD file (PDF or DOCX)</p>
               )}
               <input 
                 type="file" 
@@ -201,7 +204,7 @@ export default function UploadArea({ onAnalyze }) {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Candidate Resumes (PDF, DOCX)</label>
+          <label className="field-label">Candidate Resumes</label>
           <div 
             className={`upload-zone ${isDragging ? 'drag-active' : ''}`}
             onDragOver={handleDragOver}
@@ -209,9 +212,9 @@ export default function UploadArea({ onAnalyze }) {
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
           >
-            <UploadCloud size={48} color="var(--text-secondary)" style={{ margin: '0 auto 1rem' }} />
-            <h3>Drag & drop resumes here</h3>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>or click to browse files</p>
+            <UploadCloud size={40} color="var(--text-3)" style={{ margin: '0 auto 1.25rem' }} />
+            <h3 style={{ fontSize: '1.1rem', color: 'var(--text-1)', marginBottom: '0.25rem' }}>Select or drop resumes</h3>
+            <p style={{ color: 'var(--text-2)', fontSize: '0.9rem' }}>Supports PDF and DOCX formats</p>
             <input 
               type="file" 
               multiple 
@@ -223,37 +226,35 @@ export default function UploadArea({ onAnalyze }) {
           </div>
           
           {files.length > 0 && (
-            <div style={{ marginTop: '1rem' }} className="grid-3">
+            <div style={{ marginTop: '1.5rem' }} className="grid-2">
               {files.map((f, i) => (
-                <div key={i} className="glass-panel" style={{ padding: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '80%' }}>{f.name}</span>
-                  <button onClick={() => removeFile(i)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer' }}>✕</button>
+                <div key={i} className="file-chip">
+                  <span className="file-chip-name">{f.name}</span>
+                  <button onClick={(e) => { e.stopPropagation(); removeFile(i); }} className="file-chip-remove"><X size={16}/></button>
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <button 
-          className="btn btn-primary" 
-          style={{ width: '100%', padding: '1rem', marginTop: '1rem', fontSize: '1.1rem' }}
-          onClick={handleSubmit}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
-              Analyzing... {progress > 0 && `${progress}%`}
-            </>
-          ) : (
-            <>🚀 Analyze Candidates</>
-          )}
-        </button>
-        
-        {/* Simple inline spin animation for the loader since we don't have Tailwind */}
-        <style>{`
-          @keyframes spin { 100% { transform: rotate(360deg); } }
-        `}</style>
+        {isLoading ? (
+          <div className="liquid-progress" style={{ marginTop: '1rem' }}>
+            <div className="liquid-fill" style={{ width: `${progress > 0 ? progress : 5}%` }}></div>
+            <div className="liquid-text">
+              <Loader2 className="spin" size={14} style={{ marginRight: '6px' }} />
+              Processing... {progress > 0 && `${progress}%`}
+            </div>
+          </div>
+        ) : (
+          <button 
+            className="btn btn-primary" 
+            style={{ width: '100%', padding: '1rem', marginTop: '1rem', fontSize: '1.1rem' }}
+            onClick={handleSubmit}
+          >
+            Analyze Candidates
+          </button>
+        )}
+
       </div>
     </div>
   );

@@ -29,66 +29,65 @@ export default function SwipeCard({ candidateData, onPass, onShortlist, total, c
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h3 style={{ color: 'var(--text-secondary)' }}>
-          🔍 Candidate {currentIdx + 1} of {total}
+      <div className="nav-strip">
+        <h3 style={{ color: 'var(--text-2)', fontSize: '1rem', fontWeight: '500' }}>
+          Evaluation {currentIdx + 1} of {total}
         </h3>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn btn-pass" onClick={handlePass}>
-            <X size={20} /> Pass
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button className="btn btn-ghost" onClick={handlePass}>
+            <X size={16} /> Skip
           </button>
-          <button className="btn btn-shortlist" onClick={handleShortlist} style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', borderColor: 'var(--success)', color: 'var(--success)' }}>
-            <Heart size={20} /> Shortlist
+          <button className="btn btn-success" onClick={handleShortlist}>
+            <Heart size={16} /> Shortlist
           </button>
         </div>
       </div>
 
-      <div className={`glass-panel ${animation || 'animate-fade-in'}`} style={{ flex: 1, padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', overflowY: 'auto' }}>
+      <div className={`panel animate-up ${animation}`} style={{ flex: 1, padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem', overflowY: 'auto' }}>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--card-border)', paddingBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '2rem', color: '#64B5F6' }}>{candidateData.candidate}</h2>
-          <div className={`score-badge ${scoreClass}`}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1.5rem' }} className="divider-bottom">
+          <h2 className="candidate-name">{candidateData.candidate}</h2>
+          <div className={`score-ring ${scoreClass}`}>
             {score}
           </div>
         </div>
 
-        <div className="grid-3">
+        <div className="grid-3" style={{ alignItems: 'start' }}>
           {/* Column 1: AI Reasoning */}
           <div>
-            <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: '#a855f7' }}>
-              🧠 AI Analysis
+            <h4 className="section-title section-title-accent" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              Analysis Output
             </h4>
-            <p style={{ fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem' }}>
+            <p style={{ fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem', color: 'var(--text-1)' }}>
               {scorecard.reasoning}
             </p>
-            
             {scorecard.strengths?.length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
-                <strong style={{ color: 'var(--success)', display: 'block', marginBottom: '0.25rem' }}>✅ Strengths:</strong>
-                <p style={{ fontSize: '0.9rem' }}>{scorecard.strengths.join(', ')}</p>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <span className="field-label" style={{ color: 'var(--success)' }}>Strengths</span>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-1)' }}>{scorecard.strengths.join(', ')}</p>
               </div>
             )}
             
             {scorecard.weaknesses?.length > 0 && (
               <div>
-                <strong style={{ color: 'var(--danger)', display: 'block', marginBottom: '0.25rem' }}>❌ Weaknesses:</strong>
-                <p style={{ fontSize: '0.9rem' }}>{scorecard.weaknesses.join(', ')}</p>
+                <span className="field-label" style={{ color: 'var(--danger)' }}>Limitations</span>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-1)' }}>{scorecard.weaknesses.join(', ')}</p>
               </div>
             )}
           </div>
 
           {/* Column 2: Skills & Experience */}
           <div>
-            <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: '#6366f1' }}>
-              <Briefcase size={18} /> Skills & Experience
+            <h4 className="section-title section-title-muted" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Briefcase size={14} /> Background
             </h4>
             
             {scorecard.extracted_skills?.length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
-                <strong style={{ display: 'block', marginBottom: '0.5rem' }}>🛠️ Core Skills</strong>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <span className="field-label">Core Skills</span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                   {scorecard.extracted_skills.map((skill, i) => (
-                    <span key={i} style={{ background: 'rgba(99, 102, 241, 0.1)', padding: '0.25rem 0.75rem', borderRadius: '100px', fontSize: '0.85rem', color: '#818cf8' }}>
+                    <span key={i} className="skill-tag">
                       {skill}
                     </span>
                   ))}
@@ -97,47 +96,65 @@ export default function SwipeCard({ candidateData, onPass, onShortlist, total, c
             )}
             
             <div>
-              <strong style={{ display: 'block', marginBottom: '0.5rem' }}>⏳ Timeline</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{scorecard.extracted_experience || 'N/A'}</p>
+              <span className="field-label">Timeline</span>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-1)' }}>{scorecard.extracted_experience || 'N/A'}</p>
             </div>
           </div>
 
           {/* Column 3: Contact & Projects */}
           <div>
-            <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: '#10b981' }}>
-              <CheckCircle2 size={18} /> Contact & Projects
+            <h4 className="section-title section-title-muted" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CheckCircle2 size={14} /> Identity & Links
             </h4>
             
-            <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Mail size={16} color="var(--text-secondary)" /> 
-                {scorecard.contact_email || <span style={{ color: 'var(--text-secondary)' }}>N/A</span>}
+            <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div className="info-row">
+                <Mail size={14} /> 
+                <span>{scorecard.contact_email || 'N/A'}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Phone size={16} color="var(--text-secondary)" /> 
-                {scorecard.contact_phone || <span style={{ color: 'var(--text-secondary)' }}>N/A</span>}
+              <div className="info-row">
+                <Phone size={14} /> 
+                <span>{scorecard.contact_phone || 'N/A'}</span>
               </div>
+              {candidateData.all_links?.find(l => l.includes('linkedin.com')) && (
+                <div className="info-row">
+                  <Link size={14} color="#60A5FA" />
+                  <a href={candidateData.all_links.find(l => l.includes('linkedin.com'))} target="_blank" rel="noopener noreferrer" style={{color: '#60A5FA', textDecoration: 'none', fontSize: '0.85rem'}}>LinkedIn Profile</a>
+                </div>
+              )}
             </div>
 
-            {github_stats && Object.keys(github_stats).length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
-                <strong style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                  <Link size={16} /> Verified GitHub
-                </strong>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <span className="field-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <Link size={12} /> Verified GitHub
+              </span>
+              {github_stats && Object.keys(github_stats).length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {Object.entries(github_stats).map(([url, count]) => (
-                    <a key={url} href={url} target="_blank" rel="noopener noreferrer" style={{ color: '#64B5F6', textDecoration: 'none', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '8px' }}>
-                      📦 {count} Repos
-                    </a>
-                  ))}
+                  {Object.entries(github_stats).map(([url, count]) => {
+                    const username = url.replace('https://github.com/', '').replace('http://github.com/', '').split('/')[0];
+                    return (
+                      <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="github-chip">
+                        <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {username || 'GitHub Profile'}
+                        </span>
+                        <span style={{ color: 'var(--text-2)', fontSize: '0.75rem', fontWeight: 600, background: 'rgba(255,255,255,0.1)', padding: '0.15rem 0.5rem', borderRadius: '4px' }}>
+                          {count} Repos
+                        </span>
+                      </a>
+                    );
+                  })}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="info-row" style={{ fontStyle: 'italic', color: 'var(--text-3)' }}>
+                  No GitHub profile found
+                </div>
+              )}
+            </div>
 
             {scorecard.extracted_projects?.length > 0 && (
               <div>
-                <strong style={{ display: 'block', marginBottom: '0.5rem' }}>📂 Key Projects</strong>
-                <ul style={{ paddingLeft: '1.25rem', fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                <span className="field-label">Key Projects</span>
+                <ul style={{ paddingLeft: '1.25rem', fontSize: '0.9rem', color: 'var(--text-1)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                   {scorecard.extracted_projects.slice(0, 3).map((p, i) => (
                     <li key={i}>{p}</li>
                   ))}
@@ -149,23 +166,16 @@ export default function SwipeCard({ candidateData, onPass, onShortlist, total, c
         </div>
       </div>
       
-      {/* Absolute floating action buttons for mobile or just extra flair */}
-      <div style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '1rem', zIndex: 10 }}>
-        <button 
-          onClick={handlePass}
-          style={{ width: '64px', height: '64px', borderRadius: '50%', border: 'none', background: 'var(--danger)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 20px rgba(239,68,68,0.4)', transition: 'transform 0.2s' }}
-          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
-          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <X size={32} />
+      <div className="fab-strip" style={{ position: 'absolute', bottom: '2.5rem', left: '50%', transform: 'translateX(-50%)', zIndex: 10, border: 'none', padding: 0 }}>
+        <button className="fab-btn" onClick={handlePass}>
+          <div className="fab-circle fab-circle-danger">
+            <X size={24} />
+          </div>
         </button>
-        <button 
-          onClick={handleShortlist}
-          style={{ width: '64px', height: '64px', borderRadius: '50%', border: 'none', background: 'var(--success)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 20px rgba(16,185,129,0.4)', transition: 'transform 0.2s' }}
-          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
-          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <Heart size={32} />
+        <button className="fab-btn" onClick={handleShortlist}>
+          <div className="fab-circle fab-circle-success">
+            <Heart size={24} />
+          </div>
         </button>
       </div>
     </div>

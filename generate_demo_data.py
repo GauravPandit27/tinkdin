@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 import pymupdf as fitz
 import os
 

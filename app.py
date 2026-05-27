@@ -9,7 +9,7 @@ from llm_scorer import analyze_jd, score_candidate
 # Load environment variables
 load_dotenv()
 
-st.set_page_config(page_title="Tinkdin", page_icon="🔥", layout="wide")
+st.set_page_config(page_title="Tinkdin", layout="wide")
 
 # Sidebar for configuration
 st.sidebar.header("Configuration")
@@ -41,13 +41,13 @@ def go_to_upload():
     st.session_state.page = "Upload"
 
 if st.session_state.page == "Upload":
-    st.title("🔥 Tinkdin")
+    st.title("Tinkdin")
     st.markdown("Upload a Job Description and Resumes to analyze.")
     
     jd_text = st.text_area("Paste Job Description here:", height=200)
     uploaded_files = st.file_uploader("Upload Candidate Resumes (PDF, DOCX)", type=['pdf', 'docx'], accept_multiple_files=True)
 
-    if st.button("🚀 Analyze Candidates", use_container_width=True, type="primary"):
+    if st.button("Analyze Candidates", use_container_width=True, type="primary"):
         if not jd_text.strip():
             st.error("Please provide a Job Description.")
         elif not uploaded_files:
@@ -112,16 +112,16 @@ elif st.session_state.page == "Swipe":
     else:
         score_color = "#F44336" # Red
         
-    st.markdown(f"### 🔍 Candidate {st.session_state.current_idx + 1} of {len(st.session_state.results)}")
+    st.markdown(f"### Candidate {st.session_state.current_idx + 1} of {len(st.session_state.results)}")
     
     # Action buttons at the TOP for no-scrolling access
     col_pass, col_short = st.columns(2)
     with col_pass:
-        if st.button("❌ Pass (Left Swipe)", use_container_width=True):
+        if st.button("Pass", use_container_width=True):
             st.session_state.current_idx += 1
             st.rerun()
     with col_short:
-        if st.button("💚 Shortlist (Right Swipe)", use_container_width=True, type="primary"):
+        if st.button("Shortlist", use_container_width=True, type="primary"):
             st.session_state.shortlisted.append(res)
             st.session_state.current_idx += 1
             st.rerun()
@@ -138,27 +138,27 @@ elif st.session_state.page == "Swipe":
         col1, col2, col3 = st.columns([1.2, 1, 1])
         
         with col1:
-            st.markdown("##### 🧠 AI Score & Reasoning")
+            st.markdown("##### AI Score & Reasoning")
             st.write(res['scorecard'].get('reasoning'))
             s_str = ", ".join(res['scorecard'].get('strengths', []))
             w_str = ", ".join(res['scorecard'].get('weaknesses', []))
-            if s_str: st.markdown(f"**✅ Strengths:** {s_str}")
-            if w_str: st.markdown(f"**❌ Weaknesses:** {w_str}")
+            if s_str: st.markdown(f"**Strengths:** {s_str}")
+            if w_str: st.markdown(f"**Weaknesses:** {w_str}")
             
         with col2:
-            st.markdown("##### 💼 Skills & Experience")
+            st.markdown("##### Skills & Experience")
             skills = res['scorecard'].get('extracted_skills', [])
             if skills:
-                st.markdown(f"**🛠️ Skills:** {', '.join(skills)}")
+                st.markdown(f"**Skills:** {', '.join(skills)}")
             st.markdown(f"**Timeline:** {res['scorecard'].get('extracted_experience', 'N/A')}")
             
         with col3:
-            st.markdown("##### 📂 Projects & Contact")
+            st.markdown("##### Projects & Contact")
             email = res['scorecard'].get('contact_email')
             phone = res['scorecard'].get('contact_phone')
             if email or phone:
-                st.markdown(f"**📧 Email:** {email or 'N/A'}")
-                st.markdown(f"**📱 Phone:** {phone or 'N/A'}")
+                st.markdown(f"**Email:** {email or 'N/A'}")
+                st.markdown(f"**Phone:** {phone or 'N/A'}")
             else:
                 st.markdown("_No contact info extracted._")
                 
@@ -168,12 +168,12 @@ elif st.session_state.page == "Swipe":
                     st.markdown(f"- {p}")
             
             if res['github_stats']:
-                st.markdown("**🔗 Verified GitHub:**")
+                st.markdown("**Verified GitHub:**")
                 for url, count in res['github_stats'].items():
-                    st.markdown(f"📦 [{count} Repos]({url})")
+                    st.markdown(f"[{count} Repos]({url})")
 
 elif st.session_state.page == "Shortlist":
-    st.title("💚 Final Shortlist")
+    st.title("Final Shortlist")
     
     col1, col2 = st.columns([4, 1])
     with col1:

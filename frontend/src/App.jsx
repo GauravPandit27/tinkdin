@@ -43,24 +43,42 @@ function App() {
 
   return (
     <>
-      {page === 'upload' && <UploadArea onAnalyze={handleAnalyzeComplete} />}
-      
-      {page === 'swipe' && results.length > 0 && (
-        <SwipeCard 
-          candidateData={results[currentIdx]} 
-          onPass={handlePass}
-          onShortlist={handleShortlist}
-          total={results.length}
-          currentIdx={currentIdx}
-        />
-      )}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -10" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </svg>
 
-      {page === 'shortlist' && (
-        <Shortlist 
-          shortlisted={shortlisted} 
-          onStartOver={handleStartOver}
-        />
-      )}
+      <div className="orb-layer">
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="orb orb-3"></div>
+        <div className="orb orb-4"></div>
+        <div className="orb orb-5"></div>
+      </div>
+
+      <div className="page-content">
+        {page === 'upload' && <UploadArea onAnalyze={handleAnalyzeComplete} />}
+        
+        {page === 'swipe' && results.length > 0 && (
+          <SwipeCard 
+            candidateData={results[currentIdx]} 
+            onPass={handlePass}
+            onShortlist={handleShortlist}
+            total={results.length}
+            currentIdx={currentIdx}
+          />
+        )}
+
+        {page === 'shortlist' && (
+          <Shortlist 
+            shortlisted={shortlisted} 
+            onStartOver={handleStartOver}
+          />
+        )}
+      </div>
     </>
   );
 }
