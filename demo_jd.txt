@@ -1,5 +1,5 @@
-Job Title: Junior AI/Python Developer
-We are looking for a passionate fresher or junior developer to join our team. 
-Required Skills: Python, Machine Learning, NLP, Streamlit, Prompt Engineering.
-Experience: 0-2 years.
-The ideal candidate should be highly engaged in the developer community and have a strong portfolio of side projects.
+    Job Title: Junior AI/Python Developer
+    We are looking for a passionate fresher or junior developer to join our team. 
+    Required Skills: Python, Machine Learning, NLP, Streamlit, Prompt Engineering.
+    Experience: 0-2 years.
+    The ideal candidate should be highly engaged in the developer community and have a strong portfolio of side projects.

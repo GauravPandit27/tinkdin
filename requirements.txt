@@ -7,3 +7,6 @@ groq
 pydantic
 python-dotenv
 fitz
+fastapi
+uvicorn
+python-multipart
